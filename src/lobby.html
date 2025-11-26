@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>等待室</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>等待其他玩家加入...</h1>
+
+      <div>房號：<span id="roomId"></span></div>
+
+      <!-- 四個座位顯示區 -->
+      <div id="seat-0"></div>
+      <div id="seat-1"></div>
+      <div id="seat-2"></div>
+      <div id="seat-3"></div>
+
+      <!-- 只有房主（seat = 0）看得到 -->
+      <button id="startBtn" style="display: none">開始遊戲</button>
+    </div>
+
+    <!-- Firebase v8 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <!-- Firebase 封裝 -->
+    <script src="./js/firebase.js"></script>
+
+    <!-- 等待室邏輯 -->
+    <script src="./js/lobby.js"></script>
+  </body>
+</html>

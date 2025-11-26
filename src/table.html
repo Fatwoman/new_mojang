@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>麻將牌桌</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <h1>🀄 麻將牌桌（測試版）</h1>
+
+    <div class="table-area">
+      <!-- ======================
+           四家名稱顯示
+      ======================= -->
+      <div id="player-top" class="player">玩家 2</div>
+      <div id="player-right" class="player">玩家 3</div>
+      <div id="player-left" class="player">玩家 1</div>
+      <div id="player-bottom" class="player">你</div>
+
+      <!-- ======================
+           捨牌區（四邊）
+      ======================= -->
+      <div id="discard-top" class="discard-zone"></div>
+      <div id="discard-bottom" class="discard-zone"></div>
+      <div id="discard-left" class="discard-zone"></div>
+      <div id="discard-right" class="discard-zone"></div>
+
+      <!-- ======================
+           副露區（四邊）
+      ======================= -->
+      <div id="meld-top" class="meld-zone"></div>
+      <div id="meld-bottom" class="meld-zone"></div>
+      <div id="meld-left" class="meld-zone side"></div>
+      <div id="meld-right" class="meld-zone side"></div>
+
+      <!-- ======================
+           花牌區
+      ======================= -->
+      <div id="flower-top" class="flower-zone"></div>
+      <div id="flower-bottom" class="flower-zone"></div>
+      <div id="flower-left" class="flower-zone side"></div>
+      <div id="flower-right" class="flower-zone side"></div>
+
+      <!-- ======================
+           手牌（玩家自己）
+      ======================= -->
+      <div id="handArea"></div>
+
+      <!-- ======================
+           吃／碰／槓／胡 按鈕
+           ※ 與 ui_actionbox.js 對應：需要 id！
+      ======================= -->
+      <div id="actionBox" class="hidden">
+        <button id="chiBtn">吃</button>
+        <button id="pongBtn">碰</button>
+
+        <!-- 正確的三種槓 -->
+        <button id="anKongBtn">暗槓</button>
+        <button id="addKongBtn">加槓</button>
+        <button id="mingKongBtn">明槓</button>
+
+        <button id="huBtn">胡</button>
+        <button id="zimoBtn" class="action-button hidden">自摸</button>
+        <button id="passBtn">略過</button>
+      </div>
+
+      <div id="opp-top" class="opp-hand"></div>
+      <div id="opp-left" class="opp-hand"></div>
+      <div id="opp-right" class="opp-hand"></div>
+
+      <!-- ======================
+         中央台盤（風位 + 局數 + 剩餘牌）
+         ======================= -->
+      <div id="centerPanel">
+        <!-- 顯示英文風位 + 局數，例如：East 1 -->
+        <div id="windText">East 1</div>
+
+        <!-- 顯示剩餘牌數，內容會由 JS 更新 -->
+        <div id="remainText">剩餘：63</div>
+        <div id="messageBox" class="message-box"></div>
+
+        <!-- 四個方向指示：東南西北，哪一個是當前風就高亮 -->
+        <div id="windArrows">
+          <!-- class="wind E"：wind 是共用樣式，E / S / W / N 用來辨識是哪一個風 -->
+          <span class="wind E">東</span>
+          <span class="wind S">南</span>
+          <span class="wind W">西</span>
+          <span class="wind N">北</span>
+        </div>
+      </div>
+
+      <!-- 離開 -->
+      <button class="btn-exit" onclick="location.href='cover.html'">
+        離開遊戲
+      </button>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="./js/firebase.js"></script>
+
+    <!-- 渲染器 + 行為 + 主程式 -->
+    <script type="module" src="./js/ui_render.js"></script>
+    <script type="module" src="./js/ui_actionbox.js"></script>
+    <script type="module" src="./js/table.js"></script>
+  </body>
+</html>

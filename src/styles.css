@@ -1,0 +1,397 @@
+/* ============================================================
+   全域設定
+   ============================================================ */
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at center, #181b2e 0%, #0b0d16 100%);
+  color: #fff;
+  font-family: "Microsoft JhengHei", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin-top: 20px;
+  font-size: 2rem;
+}
+
+/* ============================================================
+     共用：隱藏用的樣式（給 JS 加上 / 移除）
+     ============================================================ */
+/* ⭐ 之後所有想隱藏的東西，只要加 class="hidden" 即可 */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+     牌桌主體（負責所有絕對定位的母容器）
+     ============================================================ */
+.table-area {
+  position: relative; /* 讓四家位置能以此為基準定位 */
+  width: 82vw;
+  height: 72vh;
+  margin-top: 20px;
+  border: 3px solid #f2c200;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  overflow: visible; /* 防止外側牌超出*/
+}
+
+/* ============================================================
+     四家名稱顯示
+     ============================================================ */
+.player {
+  position: absolute;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+/* 四家名稱位置 */
+#player-top {
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#player-bottom {
+  bottom: -85px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#player-left {
+  left: -75px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#player-right {
+  right: -75px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ============================================================
+     手牌（玩家底部）
+     ============================================================ */
+#handArea {
+  position: absolute;
+  bottom: -55px; /* 伸出框外 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0;
+}
+
+.tile-img {
+  width: 48px;
+  height: 66px;
+  border-radius: 4px;
+  margin-right: -6px;
+  transition: transform 0.2s;
+}
+
+.tile-img:hover {
+  transform: translateY(-14px);
+}
+
+/* ===========================
+     捨牌區（四家靠近中心）
+     =========================== */
+.discard-zone {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(6, 28px);
+  grid-auto-rows: 36px;
+  gap: 3px;
+  width: auto; /* 不要固定 */
+  height: auto; /* 不要固定 */
+}
+
+/* 上家捨牌 */
+#discard-top {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+/* 下家捨牌 */
+#discard-bottom {
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 左家捨牌 */
+#discard-left {
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* 右家捨牌 */
+#discard-right {
+  right: 20%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.discard-img {
+  height: 30px;
+  opacity: 0.9;
+}
+
+/* ============================================================
+     副露（吃碰槓）
+     ============================================================ */
+.meld-zone {
+  position: absolute;
+  display: flex;
+  gap: 4px;
+}
+
+/* 正確四邊位置 */
+#meld-bottom {
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#meld-top {
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+#meld-left {
+  left: 45px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+}
+
+#meld-right {
+  right: 45px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.meld-img {
+  height: 40px;
+}
+
+/* ============================================================
+     花牌（固定在四邊靠外）
+     ============================================================ */
+.flower-zone {
+  position: absolute;
+  display: flex;
+  gap: 4px;
+}
+
+/* 位置：不與棄牌重疊 */
+#flower-bottom {
+  bottom: 95px;
+  left: 78%;
+  transform: translateX(-50%);
+}
+
+#flower-top {
+  top: 125px;
+  left: 78%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+#flower-left {
+  left: 45px;
+  top: 28%;
+  transform: translateY(-50%) rotate(90deg);
+  flex-direction: row;
+}
+
+#flower-right {
+  right: 45px;
+  top: 28%;
+  transform: translateY(-50%) rotate(-90deg);
+  flex-direction: row;
+}
+
+.flower-img {
+  height: 35px;
+  filter: drop-shadow(0 0 4px pink);
+}
+
+/* ============================================================
+     吃碰槓胡操作按鈕
+     ============================================================ */
+/* ⭐ 1. 這裡不再用 display:none，改用 .hidden 控制是否顯示
+   *    這樣 showActions() 只要把 hidden 拿掉，就可以顯示出來
+   */
+#actionBox {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex; /* 預設就是 flex 容器 */
+  gap: 12px;
+  z-index: 10; /* 確保不會被牌桌上的牌遮住 */
+}
+
+#actionBox button {
+  background: #333;
+  border: 1px solid #aaa;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#actionBox button:hover {
+  background: #ffcd00;
+  color: #000;
+}
+
+/* ================================
+   立體「對手」手牌
+   ================================ */
+.opp-hand {
+  position: absolute;
+  display: flex;
+}
+
+/* 共用立體牌 */
+.opp-tile {
+  width: 38px;
+  height: 48px;
+
+  background: linear-gradient(to bottom, #2aff88, #1ea85c);
+  border: 2px solid white;
+  border-radius: 6px;
+
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* 上家（水平） */
+#opp-top {
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 左家（垂直） */
+#opp-left {
+  left: -365px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  flex-direction: row;
+}
+
+/* 右家（垂直） */
+#opp-right {
+  right: -365px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  flex-direction: row;
+}
+
+/* ============================================================
+   中央台盤（風位 + 局數 + 剩餘牌）
+   ============================================================ */
+#centerPanel {
+  /* 放在 .table-area 的正中心 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 大小可以自行微調 */
+  width: 190px;
+  height: 150px;
+
+  /* 半透明黑色背景 + 圓角 + 外框，做出一個 panel 的感覺 */
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 14px;
+  border: 2px solid #555;
+
+  /* 內容垂直置中 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+
+  /* 讓它在棄牌上面，不要被蓋住 */
+  z-index: 5;
+}
+
+/* 第一行：顯示 East 1 / South 2 等文字 */
+#windText {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* 第二行：顯示剩餘牌數 */
+#remainText {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+/* 第三行：四個風位小圖示並排 */
+#windArrows {
+  display: flex;
+  gap: 10px;
+}
+
+/* 風位基本樣式：預設比較淡 */
+.wind {
+  opacity: 0.3;
+  font-size: 1.1rem;
+}
+
+/* 當前風位：加上 .active，會變亮 + 黃色 */
+.wind.active {
+  opacity: 1;
+  color: #ffdc00;
+}
+
+.message-box {
+  position: absolute;
+  top: -50px; /* 調整到中央台上方 */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 20px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 99;
+  transition: opacity 0.3s ease;
+}
+
+/* ============================================================
+     離開遊戲按鈕
+     ============================================================ */
+.btn-exit {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #e74c3c;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-exit:hover {
+  background: #ff6055;
+}
